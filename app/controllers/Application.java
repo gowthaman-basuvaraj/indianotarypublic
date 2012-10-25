@@ -50,10 +50,14 @@ public class Application extends Controller {
                 "Puducherry",
 
         };
-        render(district, state);
+        render(district, state, states);
     }
 
     public static void fetch() throws Exception {
+        if(!request.remoteAddress.equals("127.0.0.1")) {
+            //triggerjob only from Local Address
+            renderText("Oh Yeah!");
+        }
         new FetchJob().doJob();
         renderText("OK");
     }

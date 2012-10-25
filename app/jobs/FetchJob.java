@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import play.Logger;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.libs.WS;
@@ -38,12 +39,12 @@ public class FetchJob extends Job {
     }
 
     public void fetch(String url) {
-        System.out.println("Fetching " + url);
+        Logger.warn("Fetching " + url);
         WS.HttpResponse httpResponse = WS.url(url).get();
-        System.out.println("Fetched " + url);
+        Logger.warn("Fetched " + url);
         String string = httpResponse.getString();
         List<Notary> parse = parse(url, string);
-        System.out.println("Found " + parse.size() + " Notaries");
+        Logger.warn("Found " + parse.size() + " Notaries");
         for (Notary notary : parse) {
             notary.save();
         }
@@ -51,14 +52,16 @@ public class FetchJob extends Job {
 
     private List<Notary> parse(String url, String string) {
         Document finalPage = Jsoup.parse(string);
-        System.out.println("Parsed " + url);
+        Logger.warn("Parsed " + url);
         Elements trs = finalPage.select("tr");
-        Pattern compile = Pattern.compile("(\\d{6})");
 
         List<Notary> ret = new ArrayList<Notary>();
         Notary notary = null;
         for (int i = 0; i < trs.size(); i++) {
-            if (i < 2) continue;
+            if (i < 2) {
+                //first few lines are headers
+                continue;
+            }
             Element tr = trs.get(i);
             Elements tds = tr.select("td");
             String slno = tds.get(0).html().trim();
