@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  * Time: 9:46 PM
  * To change this template use File | Settings | File Templates.
  */
-@OnApplicationStart
+//@OnApplicationStart
 public class FetchJob extends Job {
     @Override
     public void doJob() throws Exception {
@@ -33,8 +33,8 @@ public class FetchJob extends Job {
         //http://lawmin.nic.in/la/notarylist1.htm
         //http://lawmin.nic.in/la/notarylist2.htm
         fetch("http://lawmin.nic.in/la/notarylist3.htm");
-        //fetch("http://lawmin.nic.in/la/notarylist1.htm");
-        //fetch("http://lawmin.nic.in/la/notarylist2.htm");
+        fetch("http://lawmin.nic.in/la/notarylist1.htm");
+        fetch("http://lawmin.nic.in/la/notarylist2.htm");
     }
 
     public void fetch(String url) {

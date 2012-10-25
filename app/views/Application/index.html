@@ -1,4 +1,6 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
+#{if district || state}
+    #{set title: "Notary Public in "+district+" "+state /}
+#{/if}
+#{set title:'Notary Public in India, Bangalore, Mumbai, Delhi, Karnataka' /}
 
-#{welcome /}
