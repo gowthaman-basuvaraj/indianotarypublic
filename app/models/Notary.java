@@ -21,4 +21,7 @@ public class Notary extends Model {
     public String slno;
     public String area;
 
+    public double lat;
+    public double lng;
+
 }

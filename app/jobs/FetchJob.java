@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import play.Logger;
+import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.libs.WS;
@@ -30,6 +31,15 @@ import java.util.regex.Pattern;
 public class FetchJob extends Job {
     @Override
     public void doJob() throws Exception {
+        if(Play.mode.isDev()){
+            String s = FileUtils.readFileToString(new File("/var/tmp/1.html"));
+            List<Notary> parse = parse("", s);
+            Logger.warn("Found " + parse.size() + " Notaries");
+            for (Notary notary : parse) {
+                notary.save();
+            }
+            return;
+        }
         //http://lawmin.nic.in/la/notarylist3.htm
         //http://lawmin.nic.in/la/notarylist1.htm
         //http://lawmin.nic.in/la/notarylist2.htm
@@ -80,6 +90,7 @@ public class FetchJob extends Job {
 
                 notary.address = addr;
                 notary.area = tds.get(4).html();
+                //todo: try to fetch latlng and store it, so we can show it in a map
 
 
             }

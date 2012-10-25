@@ -1,7 +1,10 @@
 package controllers;
 
 import jobs.FetchJob;
+import org.apache.commons.lang.StringUtils;
 import play.*;
+import play.db.jpa.JPA;
+import play.db.jpa.JPABase;
 import play.mvc.*;
 
 import java.util.*;
@@ -47,16 +50,65 @@ public class Application extends Controller {
                 "Dadra and Nagar Haveli",
                 "Daman and Diu",
                 "Lakshadweep",
-                "Puducherry",
+                "Puducherry"
 
         };
-        render(district, state, states);
+
+        //its  a small database, & its in memory, lets fetchit and then do some stuff
+        List<Notary> all = Notary.findAll();
+
+        List<Notary> search = new ArrayList<Notary>();
+
+        if (StringUtils.isNotBlank(state)) {
+            String s = state.toLowerCase();
+            for (Notary n : all) {
+                if (contains(s, n)) {
+                    search.add(n);
+                }
+            }
+        }
+        List<Notary> search2 = new ArrayList<Notary>();
+        if (StringUtils.isNotBlank(district)) {
+            String s = district.toLowerCase();
+            List<Notary> iter = search.size() == 0 ? all : search;
+            for (Notary n : iter) {
+                if (contains(s, n)) {
+                    search2.add(n);
+                }
+            }
+        }
+        String mesg = null;
+        if (search2.size() != 0) {
+            search = search2;
+        }else{
+            mesg = "No Results Found for "+district+"/"+state;
+        }
+
+        if(search.size()==0 && (StringUtils.isBlank(district) && StringUtils.isBlank(state))){
+            int size = all.size();
+            int fromIndex = new Random().nextInt(size / 10);
+            search = all.subList(fromIndex, fromIndex+10);
+        }
+
+        render(district, state, states, search, mesg);
+    }
+
+    private static boolean contains(String s, Notary n) {
+        String s1 = n.area.toLowerCase();
+        return s1.contains(s);
+    }
+
+    public static void view(long notaryId) {
+        renderText("View " + notaryId);
     }
 
     public static void fetch() throws Exception {
-        if(!request.remoteAddress.equals("127.0.0.1")) {
+        if (!request.remoteAddress.equals("127.0.0.1")) {
             //triggerjob only from Local Address
             renderText("Oh Yeah!");
+        }
+        if (Notary.count() != 0) {
+            renderText("Have Some Data");
         }
         new FetchJob().doJob();
         renderText("OK");

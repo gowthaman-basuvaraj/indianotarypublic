@@ -3,9 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                                               Application.index
+*        /                                               Application.index
 GET     /notary-public-{district}                       Application.index
 GET     /notary-public-{district}-{state}               Application.index
+GET     /notary/{junk}/{<[0-9]+>notaryId}                   Application.view
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
