@@ -3,6 +3,8 @@ package models;
 import play.db.jpa.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -21,7 +23,21 @@ public class Notary extends Model {
     public String slno;
     public String area;
 
+    public String phno;
+    public String feeDetails;
+
     public double lat;
     public double lng;
+
+    @Transient
+    public String addressLC;
+    @Transient
+    public String areaLC;
+
+    @PostLoad
+    public void postLoad(){
+        addressLC = address.toLowerCase();
+        areaLC = area.toLowerCase();
+    }
 
 }

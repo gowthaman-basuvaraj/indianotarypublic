@@ -1,0 +1,28 @@
+#{extends 'main.html' /}
+
+#{set title:'Notary Public in India '+notary.area /}
+<div class="row-fluid">
+    <div class="span12">
+        <h3>Details of '${notary.name}'</h3>
+
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td rowspan="3">
+                    <strong>${notary.name}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>Address : <em>${notary.address}</em></td>
+                <td>Area : <em>${notary.area}</em></td>
+            </tr>
+            <tr>
+                <td>Phone Number: ${notary.phno}</td>
+                <td>Fee Details: ${notary.feeDetails}</td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- todo: map comes here -->
+        <!-- todo: edit options -->
+    </div>
+</div>

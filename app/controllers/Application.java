@@ -80,26 +80,28 @@ public class Application extends Controller {
         String mesg = null;
         if (search2.size() != 0) {
             search = search2;
-        }else{
-            mesg = "No Results Found for "+district+"/"+state;
         }
 
         if(search.size()==0 && (StringUtils.isBlank(district) && StringUtils.isBlank(state))){
             int size = all.size();
             int fromIndex = new Random().nextInt(size / 10);
             search = all.subList(fromIndex, fromIndex+10);
+        }else{
+            mesg = "No Results Found for "+district+"/"+state;
         }
 
         render(district, state, states, search, mesg);
     }
 
     private static boolean contains(String s, Notary n) {
-        String s1 = n.area.toLowerCase();
-        return s1.contains(s);
+        String s1 = n.areaLC;
+        String s2 = n.addressLC;
+        return s1.contains(s) || s2.contains(s);
     }
 
     public static void view(long notaryId) {
-        renderText("View " + notaryId);
+        JPABase notary = Notary.findById(notaryId);
+        render(notary);
     }
 
     public static void fetch() throws Exception {

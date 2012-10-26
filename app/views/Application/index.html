@@ -13,11 +13,12 @@
                     <label class="control-label" for="district">Area/District/Location</label>
 
                     <div class="controls">
-                        <input name="district" placeholder="Enter some terms" id="district" value="${district}" class="span12"/>
+                        <input name="district" placeholder="Enter some terms" id="district" value="${district}"
+                               class="span12"/>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="createdBy" >State</label>
+                    <label class="control-label" for="createdBy">State</label>
 
                     <div class="controls">
                         <select name="state" id="createdBy" class="span12">
@@ -39,26 +40,31 @@
     </div>
     <div class="span10">
         <h5>Notaries</h5>
-        <table class="table table-condensed table-bordered">
+        <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>Sl.No</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>&nbsp;</th>
-                </tr>
+            <tr>
+                <th>Sl.No</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>&nbsp;</th>
+            </tr>
             </thead>
             <tbody>
             #{list items:search, as:'n'}
-                <tr>
-                    <td>${n.slno}</td>
-                    <td>${n.name}</td>
-                    <td>${n.address}</td>
-                    <td>
-                        <a href="/notary/${n.area}/${n.id}">Details</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>${n.slno}</td>
+                <td>${n.name}</td>
+                <td>${n.address}</td>
+                <td>
+                    <a href="/notary/${n.area}/${n.id}">Details</a>
+                </td>
+            </tr>
             #{/list}
+            #{if search.size()==0}
+            <td colspan="4">
+                <h5>${mesg}</h5>
+            </td>
+            #{/if}
             </tbody>
         </table>
     </div>
