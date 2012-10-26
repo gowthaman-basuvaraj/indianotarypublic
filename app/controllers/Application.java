@@ -13,7 +13,8 @@ import models.*;
 
 public class Application extends Controller {
 
-    public static void index(String district, String state) {
+    @Before
+    public static void before() {
         String[] states = new String[]{
                 "Andhra Pradesh",
                 "Arunachal Pradesh",
@@ -54,6 +55,12 @@ public class Application extends Controller {
 
         };
 
+        User.current();
+        renderArgs.put("states", states);
+    }
+
+    public static void index(String district, String state) {
+
         //its  a small database, & its in memory, lets fetchit and then do some stuff
         List<Notary> all = Notary.findAll();
 
@@ -82,15 +89,15 @@ public class Application extends Controller {
             search = search2;
         }
 
-        if(search.size()==0 && (StringUtils.isBlank(district) && StringUtils.isBlank(state))){
+        if (search.size() == 0 && (StringUtils.isBlank(district) && StringUtils.isBlank(state))) {
             int size = all.size();
             int fromIndex = new Random().nextInt(size / 10);
-            search = all.subList(fromIndex, fromIndex+10);
-        }else{
-            mesg = "No Results Found for "+district+"/"+state;
+            search = all.subList(fromIndex, fromIndex + 10);
+        } else {
+            mesg = "No Results Found for " + district + "/" + state;
         }
 
-        render(district, state, states, search, mesg);
+        render(district, state, search, mesg);
     }
 
     private static boolean contains(String s, Notary n) {
@@ -114,5 +121,14 @@ public class Application extends Controller {
         }
         new FetchJob().doJob();
         renderText("OK");
+    }
+
+    public static void editAddress(NotaryEdit notary){
+        User current = User.current();
+        if(current!=null && !current.tempUser){
+            notary.editor = current;
+        }
+        notary.save();
+        view(notary.notaryId);
     }
 }

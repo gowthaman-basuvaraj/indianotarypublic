@@ -4,71 +4,141 @@
 
     function initialize() {
         var mapOptions = {
-            zoom: 15,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            zoom:15,
+            mapTypeId:google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById('map_canvas'),
                 mapOptions);
         geocoder = new google.maps.Geocoder();
         function codeAddress(address, tryAgain) {
-            geocoder.geocode( { 'address': address}, function(results, status) {
+            geocoder.geocode({ 'address':address}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var position = results[0].geometry.location;
                     map.setCenter(position);
                     var marker = new google.maps.Marker({
-                        map: map,
-                        position: position
+                        map:map,
+                        position:position
                     });
                     var infowindow = new google.maps.InfoWindow({
-                        map: map,
-                        position: position,
-                        content: address
+                        map:map,
+                        position:position,
+                        content:address
                     });
 
                     map.setCenter(position);
                 } else {
-                    if(tryAgain){
+                    if (tryAgain) {
                         codeAddress('${notary.area}', false);
                     }
                 }
             });
         }
-        codeAddress('${notary.address}',true);
+
+        codeAddress(document.getElementById("address").value, true);
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 #{set title:'Notary Public in India '+notary.area /}
 <div class="row-fluid">
     <div class="span12">
-        <h3>Details of '${notary.name}'</h3>
 
-        <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <td rowspan="3">
-                    <strong>${notary.name}</strong>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Address : <em>${notary.address}</em>
-                </td>
-                <td>Area : <em>${notary.area}</em></td>
-            </tr>
-            <tr>
-                <td>Phone Number: ${notary.phno}</td>
-                <td>Fee Details: ${notary.feeDetails}</td>
-            </tr>
-            </tbody>
-        </table>
-        <!-- todo: map comes here -->
         <div class="row-fluid">
-            <div class="span3">&nbsp;</div>
-            <div class="span6">
-                <div id="map_canvas" style="height:500px"></div>
+            <div class="span5">
+                <div class="span12">
+                    <h3>Details of '${notary.name}'</h3>
+
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td rowspan="3">
+                                <strong>${notary.name}</strong>
+                                <a href="#edit" onclick="$('#edit').toggle();">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Address : <em>${notary.address}</em>
+                            </td>
+                            <td>Area : <em>${notary.area}</em></td>
+                        </tr>
+                        <tr>
+                            <td>Phone Number: ${notary.phno}</td>
+                            <td>Fee Details: ${notary.feeDetails}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="span12">
+                    <div id="edit" style="display: none">
+                        <form action="/editAddress" method="post">
+                            <fieldset>
+                                <legend>
+                                    Edit Details
+                                </legend>
+                                <input type="hidden" name="notary.notaryId" value="${notary.id}"/>
+                                <div class="control-group">
+                                    <label class="control-label" for="address">Address</label>
+
+                                    <div class="controls">
+                                        <textarea name="notary.address" id="address"
+                                                  class="span12">${notary.address}</textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="district">Area/District/Location</label>
+
+                                    <div class="controls">
+                                        <input name="notary.district" placeholder="Enter some terms" id="district"
+                                               value="${notary.district}"
+                                               class="span12"/>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="city">City</label>
+
+                                    <div class="controls">
+                                        <input name="notary.city" placeholder="Enter some terms" id="city"
+                                               value="${notary.city}"
+                                               class="span12"/>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="state">State</label>
+
+                                    <div class="controls">
+                                        <select name="notary.state" placeholder="Enter some terms" id="state"
+                                                value="${notary.state}"
+                                                class="span12">
+                                        #{list items:states,as:'i'}
+                                            <option value="${i}" #{if i==notary.state}selected=""#{/if}>${i}</option>
+                                        #{/list}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="pincode">Pincode</label>
+
+                                    <div class="controls">
+                                        <input name="notary.pincode" placeholder="Enter some terms" id="pincode"
+                                               value="${notary.pincode}"
+                                               class="span12"/>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input type="submit" value="Save"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="span3">&nbsp;</div>
+            <div class="span7">
+                <div id="map_canvas" style="height:500px;margin-top: 20px"></div>
+            </div>
         </div>
-        <!-- todo: edit options -->
+
     </div>
 </div>

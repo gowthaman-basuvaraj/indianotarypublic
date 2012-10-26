@@ -7,7 +7,9 @@
 
 GET     /notary-public-{district}-{state}               Application.index(format:'html')
 GET     /notary-public-{district}                       Application.index(format:'html')
+*     /editAddress                       Application.editAddress
 
+*       /authorize                                      AdminController.authorizeChanges
 
 GET     /notary/{junk}/{<[0-9]+>notaryId}                        Application.view(format:'html')
 

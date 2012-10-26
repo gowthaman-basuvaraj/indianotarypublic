@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,10 +36,24 @@ public class Notary extends Model {
     @Transient
     public String areaLC;
 
+
+    public String city;
+    public String district;
+    public String state;
+    public String pincode;
+
     @PostLoad
-    public void postLoad(){
-        addressLC = address.toLowerCase();
-        areaLC = area.toLowerCase();
+    public void postLoad() {
+        if (address != null)
+            addressLC = address.toLowerCase();
+        if (area != null)
+            areaLC = area.toLowerCase();
+        if (pincode == null) {
+            Matcher matcher = Pattern.compile(".*?(\\d{6}).*?").matcher(address);
+            if (matcher.matches()) {
+                pincode = matcher.group(1);
+            }
+        }
     }
 
 }
