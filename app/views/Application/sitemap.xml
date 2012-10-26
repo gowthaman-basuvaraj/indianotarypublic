@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   #{list items:states, as:'s'}
+    <url><loc>http://www.indianotarypublic.com/notary-public-${s}</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+   #{/list}
+    #{list items:['chennai','bangalore','pune','mumbai','delhi','kolkatta'], as:'s'}
+    <url><loc>http://www.indianotarypublic.com/notary-public-${s}</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+   #{/list}
+</urlset>

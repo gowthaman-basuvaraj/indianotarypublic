@@ -29,7 +29,7 @@
                         <select name="state" id="createdBy" class="span12">
                             <option value="">All</option>
                         #{list items:states,as:'i'}
-                            <option value="${i}" #{if i==state}selected=""#{/if}>${i}</option>
+                            <option value="${i}" #{if i.toLowerCase()==state?.toLowerCase()}selected=""#{/if}>${i}</option>
                         #{/list}
                         </select>
                     </div>
@@ -61,13 +61,13 @@
                 <td>${n.name}</td>
                 <td>${n.address}</td>
                 <td>
-                    <a href="/notary/${n.area}/${n.id}">Details</a>
+                    <a href="/notary/${n.id}/${n.area}">Details</a>
                 </td>
             </tr>
             #{/list}
             #{if search.size()==0}
             <td colspan="4">
-                <h5>${mesg}</h5>
+                <h5>No Results found!</h5>
             </td>
             #{/if}
             </tbody>

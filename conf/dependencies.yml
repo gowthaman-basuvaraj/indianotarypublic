@@ -3,4 +3,5 @@
 require:
     - play
     - play -> secure
+    - play -> crud
     - org.jsoup -> jsoup  1.6.1

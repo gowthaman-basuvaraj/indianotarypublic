@@ -11,10 +11,12 @@ GET     /notary-public-{district}                       Application.index(format
 
 *       /authorize                                      AdminController.authorizeChanges
 
-GET     /notary/{junk}/{<[0-9]+>notaryId}                        Application.view(format:'html')
+GET     /notary/{<[0-9]+>notaryId}/{junk}                    Application.view(format:'html')
 
 GET     /notary/{<[0-9]+>notaryId}.json                        Application.view(format:'json')
 GET     /notary/{<[a-zA-Z]+>search}.json                        Application.search(format:'json')
+GET     /sitemap.xml                                        Application.sitemap(format:'xml')
+*       /admin              module:crud
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

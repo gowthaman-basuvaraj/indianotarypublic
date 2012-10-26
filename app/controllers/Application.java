@@ -65,7 +65,7 @@ public class Application extends Controller {
 
         //its  a small database, & its in memory, lets fetchit and then do some stuff
         List<Notary> all = (List<Notary>) Cache.get(all_notary);
-        if(all==null){
+        if(all==null || all.size()==0){
             all =  Notary.findAll();
             Cache.set(all_notary,all);
         }
@@ -136,5 +136,9 @@ public class Application extends Controller {
         }
         notary.save();
         view(notary.notaryId);
+    }
+
+    public static void sitemap(){
+        render();
     }
 }
