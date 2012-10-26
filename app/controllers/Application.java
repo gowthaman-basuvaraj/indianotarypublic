@@ -3,6 +3,7 @@ package controllers;
 import jobs.FetchJob;
 import org.apache.commons.lang.StringUtils;
 import play.*;
+import play.cache.Cache;
 import play.db.jpa.JPA;
 import play.db.jpa.JPABase;
 import play.mvc.*;
@@ -59,10 +60,15 @@ public class Application extends Controller {
         renderArgs.put("states", states);
     }
 
+    private static final String all_notary = "ALL_NOTARY";
     public static void index(String district, String state) {
 
         //its  a small database, & its in memory, lets fetchit and then do some stuff
-        List<Notary> all = Notary.findAll();
+        List<Notary> all = (List<Notary>) Cache.get(all_notary);
+        if(all==null){
+            all =  Notary.findAll();
+            Cache.set(all_notary,all);
+        }
 
         List<Notary> search = new ArrayList<Notary>();
 
