@@ -1,0 +1,4 @@
+models.User(admin):
+  name: Admin
+  userName: admin
+  password: 440576fda8925b32dfbc4ec279cc037c

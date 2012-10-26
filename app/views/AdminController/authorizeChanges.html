@@ -1,0 +1,69 @@
+#{extends 'main.html'/}
+<div class="row-fluid">
+#{list items:edits, as:'notary'}
+    <div class="span5">
+        <form action="@{authorize()}" method="post">
+            <fieldset>
+                <legend>${notary.notary.address}</legend>
+                    <input type="hidden" name="notary.notaryId" value="${notary.notaryId}"/>
+
+                    <div class="control-group">
+                        <label class="control-label" for="address">Address</label>
+
+                        <div class="controls">
+                            <textarea name="notary.address" placeholder="Enter some terms" id="address"
+                                      class="span12">${notary.address}</textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="district">Area/District/Location</label>
+
+                        <div class="controls">
+                            <input name="notary.district" placeholder="Enter some terms" id="district"
+                                   value="${notary.district}"
+                                   class="span12"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="city">City</label>
+
+                        <div class="controls">
+                            <input name="notary.city" placeholder="Enter some terms" id="city"
+                                   value="${notary.city}"
+                                   class="span12"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="state">State</label>
+
+                        <div class="controls">
+                            <select name="notary.state" placeholder="Enter some terms" id="state"
+                                    value="${notary.state}"
+                                    class="span12">
+                                #{list items:states,as:'i'}
+                                    <option value="${i}" #{if i==notary.state}selected=""#{/if}>${i}</option>
+                                #{/list}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="pincode">Pincode</label>
+
+                        <div class="controls">
+                            <input name="notary.pincode" placeholder="Enter some terms" id="pincode"
+                                   value="${notary.pincode}"
+                                   class="span12"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn  btn-primary">Authorize</button>
+                            <a href="/AdminController/discard?notary.id=${notary.id}" class="btn btn-warning">Discard</a>
+                        </div>
+                    </div>
+
+            </fieldset>
+        </form>
+    </div>
+#{/list}
+</div>
